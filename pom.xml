@@ -200,6 +200,12 @@
       <version>${tcnative.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.carrotsearch</groupId>
+      <artifactId>junit-benchmarks</artifactId>
+      <version>LATEST</version>
+      <scope>test</scope>
+    </dependency>
 
     <!-- JMH -->
     <dependency>

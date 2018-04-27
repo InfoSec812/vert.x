@@ -11,12 +11,16 @@
 
 package io.vertx.test.core;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.Json;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -35,6 +39,13 @@ import java.util.Map;
  */
 public class JsonMapperTest extends VertxTestBase {
 
+  public static final int BENCHMARK_ROUNDS = 1000;
+  public static final int WARMUP_ROUNDS = 100;
+
+  @Rule
+  public TestRule benchmarkRun = new BenchmarkRule();
+
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void testGetSetMapper() {
     ObjectMapper mapper = Json.mapper;
@@ -45,6 +56,7 @@ public class JsonMapperTest extends VertxTestBase {
     Json.mapper = mapper;
   }
 
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void testGetSetPrettyMapper() {
     ObjectMapper mapper = Json.prettyMapper;
@@ -55,6 +67,7 @@ public class JsonMapperTest extends VertxTestBase {
     Json.prettyMapper = mapper;
   }
 
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void encodeCustomTypeInstant() {
     Instant now = Instant.now();
@@ -66,6 +79,7 @@ public class JsonMapperTest extends VertxTestBase {
 
   }
 
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void encodeCustomTypeInstantNull() {
     Instant now = null;
@@ -74,6 +88,7 @@ public class JsonMapperTest extends VertxTestBase {
     assertEquals("null", json);
   }
 
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void encodeCustomTypeBinary() {
     byte[] data = new byte[] { 'h', 'e', 'l', 'l', 'o'};
@@ -83,6 +98,7 @@ public class JsonMapperTest extends VertxTestBase {
     assertEquals("\"aGVsbG8=\"", json);
   }
 
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void encodeCustomTypeBinaryNull() {
     byte[] data = null;
@@ -91,6 +107,7 @@ public class JsonMapperTest extends VertxTestBase {
     assertEquals("null", json);
   }
 
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void encodeToBuffer() {
     Buffer json = Json.encodeToBuffer("Hello World!");
@@ -99,6 +116,7 @@ public class JsonMapperTest extends VertxTestBase {
     assertEquals("\"Hello World!\"", json.toString("UTF-8"));
   }
 
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void testGenericDecoding() {
     Pojo original = new Pojo();
@@ -136,6 +154,7 @@ public class JsonMapperTest extends VertxTestBase {
   private static final TypeReference<List<Object>> LIST_TYPE_REF = new TypeReference<List<Object>>() {};
   private static final TypeReference<Boolean> BOOLEAN_TYPE_REF = new TypeReference<Boolean>() {};
 
+  @BenchmarkOptions(benchmarkRounds = BENCHMARK_ROUNDS, warmupRounds = WARMUP_ROUNDS)
   @Test
   public void testDecodeValue() {
     assertDecodeValue(Buffer.buffer("42"), 42, INTEGER_TYPE_REF);
